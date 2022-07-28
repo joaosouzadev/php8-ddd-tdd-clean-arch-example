@@ -15,4 +15,17 @@ class Product {
     ) {
 
     }
+
+    public function removeFromStock(): void {
+        $this->onStock = false;
+    }
+
+    public function addOnStock(): void {
+        $this->onStock = true;
+    }
+
+    public function update(string $name, float $price = null): void {
+        $this->name = $name;
+        $this->price = $price ?? $this->price;
+    }
 }
