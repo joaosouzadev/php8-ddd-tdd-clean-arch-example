@@ -17,4 +17,12 @@ trait MagicMethodsTrait {
     public function getId(): string {
         return (string)$this->id;
     }
+
+    public function getCreatedAt(): string {
+        return $this->createdAt->format('Y-m-d H:i:s');
+    }
+
+    public function getUpdatedAt(): string {
+        return $this->createdAt->format('Y-m-d H:i:s');
+    }
 }
