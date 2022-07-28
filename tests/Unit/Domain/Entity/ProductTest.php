@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\Unit\Domain\Entity;
+
 use Core\Domain\Entity\Product;
+use Core\Domain\Exception\EntityValidationException;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase {
@@ -71,5 +74,27 @@ class ProductTest extends TestCase {
 
         $this->assertEquals("GeForce RTX 3060 TI", $product->name);
         $this->assertEquals(449.99, $product->price);
+    }
+
+    public function test_CreateProductWithInvalidPrice_ShouldThrowException() {
+        try {
+            $product = new Product(
+                name: "GeForce RTX 3060 TI",
+                price: 0
+            );
+        } catch (\Throwable $th) {
+            $this->assertInstanceOf(EntityValidationException::class, $th);
+        }
+    }
+
+    public function test_CreateProductWithEmptyName_ShouldThrowException() {
+        try {
+            $product = new Product(
+                name: "",
+                price: 500
+            );
+        } catch (\Throwable $th) {
+            $this->assertInstanceOf(EntityValidationException::class, $th);
+        }
     }
 }
