@@ -13,4 +13,8 @@ trait MagicMethodsTrait {
         $className = get_class($this);
         throw new InvalidArgumentException("Property $property not found in $className");
     }
+
+    public function getId(): string {
+        return (string)$this->id;
+    }
 }
