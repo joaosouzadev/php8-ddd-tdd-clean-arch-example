@@ -4,7 +4,6 @@ namespace Tests\Unit\Domain\Entity;
 
 use Core\Domain\Entity\Product;
 use Core\Domain\Exception\EntityValidationException;
-use Core\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase {
@@ -16,6 +15,7 @@ class ProductTest extends TestCase {
         );
 
         $this->assertNotEmpty($product->id);
+        $this->assertNotEmpty($product->getCreatedAt());
         $this->assertEquals("GeForce RTX 3060", $product->name);
         $this->assertEquals(449.99, $product->price);
         $this->assertTrue($product->onStock);
