@@ -1,2 +1,2 @@
 # php8-ddd-tdd-clean-arch-example
-Example of ddd tdd and clean arch using php8
+Example of DDD, TDD and Clean Architecture using php8
