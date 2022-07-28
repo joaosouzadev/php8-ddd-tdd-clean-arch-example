@@ -50,17 +50,22 @@ class ProductTest extends TestCase {
             name: "GeForce RTX 3060",
             price: 449.99,
             id: $uuid,
-            onStock: true
+            onStock: true,
+            createdAt: (new \DateTime('2022-01-01'))->format('Y-m-d H:i:s'),
+            updatedAt: (new \DateTime('2022-01-01'))->format('Y-m-d H:i:s')
         );
+        $creationDate = $product->updatedAt->getTimestamp();
 
         $product->update(
             name: "GeForce RTX 3060 TI",
             price: 599.99,
         );
+        $updateDate = $product->updatedAt->getTimestamp();
 
         $this->assertEquals($uuid, $product->id);
         $this->assertEquals("GeForce RTX 3060 TI", $product->name);
         $this->assertEquals(599.99, $product->price);
+        $this->assertNotEquals($creationDate, $updateDate);
     }
 
     public function test_UpdateProductWithoutPrice() {
