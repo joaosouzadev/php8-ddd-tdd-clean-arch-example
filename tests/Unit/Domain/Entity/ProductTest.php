@@ -4,6 +4,7 @@ namespace Tests\Unit\Domain\Entity;
 
 use Core\Domain\Entity\Product;
 use Core\Domain\Exception\EntityValidationException;
+use Core\Domain\ValueObject\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase {
@@ -14,6 +15,7 @@ class ProductTest extends TestCase {
             onStock: true
         );
 
+        $this->assertNotEmpty($product->id);
         $this->assertEquals("GeForce RTX 3060", $product->name);
         $this->assertEquals(449.99, $product->price);
         $this->assertTrue($product->onStock);
@@ -42,7 +44,8 @@ class ProductTest extends TestCase {
     }
 
     public function test_UpdateProduct() {
-        $uuid = 'uuid.value';
+        $uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+
         $product = new Product(
             name: "GeForce RTX 3060",
             price: 449.99,
@@ -55,12 +58,14 @@ class ProductTest extends TestCase {
             price: 599.99,
         );
 
+        $this->assertEquals($uuid, $product->id);
         $this->assertEquals("GeForce RTX 3060 TI", $product->name);
         $this->assertEquals(599.99, $product->price);
     }
 
     public function test_UpdateProductWithoutPrice() {
-        $uuid = 'uuid.value';
+        $uuid = \Ramsey\Uuid\Uuid::uuid4()->toString();
+
         $product = new Product(
             name: "GeForce RTX 3060",
             price: 449.99,
@@ -72,6 +77,7 @@ class ProductTest extends TestCase {
             name: "GeForce RTX 3060 TI",
         );
 
+        $this->assertEquals($uuid, $product->id);
         $this->assertEquals("GeForce RTX 3060 TI", $product->name);
         $this->assertEquals(449.99, $product->price);
     }

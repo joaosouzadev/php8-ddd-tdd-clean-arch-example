@@ -3,8 +3,8 @@
 namespace Core\Domain\Entity;
 
 use Core\Domain\Entity\Traits\MagicMethodsTrait;
-use Core\Domain\Exception\EntityValidationException;
 use Core\Domain\Validation\DomainValidation;
+use Core\Domain\ValueObject\Uuid;
 
 class Product {
     use MagicMethodsTrait;
@@ -12,9 +12,10 @@ class Product {
     public function __construct(
         protected string $name,
         protected float $price,
-        protected string $id = "",
+        protected Uuid|string $id = "",
         protected bool $onStock = true,
     ) {
+        $this->id = $this->id ? new Uuid($this->id) : Uuid::newUuid();
         $this->validate();
     }
 
