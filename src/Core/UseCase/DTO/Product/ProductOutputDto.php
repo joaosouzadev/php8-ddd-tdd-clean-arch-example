@@ -2,7 +2,7 @@
 
 namespace Core\UseCase\DTO\Product;
 
-class CreateProductOutputDto {
+class ProductOutputDto {
     public function __construct(
         public string $id,
         public string $name,

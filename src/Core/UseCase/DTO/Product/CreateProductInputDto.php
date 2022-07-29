@@ -7,7 +7,5 @@ class CreateProductInputDto {
         public string $name,
         public float $price,
         public bool $onStock = true
-    ) {
-
-    }
+    ) {}
 }
