@@ -38,7 +38,7 @@ class Product {
         $this->validate();
     }
 
-    public function validate(): void {
+    private function validate(): void {
         DomainValidation::notEmpty($this->name);
         DomainValidation::positiveNumber($this->price);
     }
