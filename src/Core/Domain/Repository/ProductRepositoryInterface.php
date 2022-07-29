@@ -6,7 +6,7 @@ use Core\Domain\Entity\Product;
 
 interface ProductRepositoryInterface {
     public function insert(Product $product): Product;
-    public function findAll(array $filters): array;
+    public function findAll(array $filters, string $orderBy, int $page, int $perPage): PaginationInterface;
     public function findById(string $id): Product;
     public function update(Product $product): Product;
     public function delete(string $id): bool;
