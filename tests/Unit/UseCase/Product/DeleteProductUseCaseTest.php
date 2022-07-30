@@ -4,36 +4,33 @@ namespace Tests\Unit\UseCase\Product;
 
 use Core\Domain\Entity\Product;
 use Core\Domain\Repository\ProductRepositoryInterface;
+use Core\UseCase\DTO\Product\DeleteProductOutputDto;
 use Core\UseCase\DTO\Product\ProductInputDto;
-use Core\UseCase\DTO\Product\ProductOutputDto;
-use Core\UseCase\Product\ListProductUseCase;
+use Core\UseCase\Product\DeleteProductUseCase;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-class ListProductUseCaseTest extends TestCase {
-    public function test_GetById() {
+class DeleteProductUseCaseTest extends TestCase {
+    public function test_deleteProduct() {
         $id = Uuid::uuid4()->toString();
         $this->mockEntity = \Mockery::mock(Product::class, [
             "GeForce RTX 3060",
             499.99,
             $id,
         ]);
-        $this->mockEntity->shouldReceive('getCreatedAt')->andReturn($this->mockEntity->createdAt->format('Y-m-d H:i:s'));
 
         $this->repoForTests = \Mockery::mock(\stdClass::class, ProductRepositoryInterface::class);
-        $this->repoForTests->shouldReceive('findById')->once()->with($id)->andReturn($this->mockEntity);
+        $this->repoForTests->shouldReceive('delete')->once()->andReturn(true);
 
         $this->mockInputDto = \Mockery::mock(ProductInputDto::class, [
-            $id
+            $id,
         ]);
 
-        $useCase = new ListProductUseCase($this->repoForTests);
+        $useCase = new DeleteProductUseCase($this->repoForTests);
         $response = $useCase->execute($this->mockInputDto);
 
-        $this->assertInstanceOf(ProductOutputDto::class, $response);
-        $this->assertEquals($this->mockEntity->id, $response->id);
-        $this->assertEquals($this->mockEntity->name, $response->name);
-        $this->assertEquals($this->mockEntity->price, $response->price);
+        $this->assertInstanceOf(DeleteProductOutputDto::class, $response);
+        $this->assertTrue($response->success);
     }
 
     protected function tearDown(): void {
