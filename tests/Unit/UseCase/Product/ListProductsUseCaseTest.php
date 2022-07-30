@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\UseCase\Product;
 
-use Cassandra\Date;
 use Core\Domain\Repository\PaginationInterface;
 use Core\Domain\Repository\ProductRepositoryInterface;
 use Core\UseCase\DTO\Product\ProductsListInputDto;
@@ -50,18 +49,11 @@ class ListProductsUseCaseTest extends TestCase {
         $this->assertInstanceOf(ProductsListOutputDto::class, $response);
         $this->assertInstanceOf(\stdClass::class, $response->items[0]);
         $this->assertCount(1, $response->items);
-
-        // spy
-        $this->spy = \Mockery::mock(\stdClass::class, ProductRepositoryInterface::class);
-        $this->spy->shouldReceive('findAll')->andReturn($this->mockPaginator);
-        $useCase = new ListProductsUseCase($this->spy);
-        $useCase->execute($this->mockInputDto);
-        $this->spy->shouldHaveReceived('findAll');
     }
 
     private function mockRepo(): void {
         $this->repoForTests = \Mockery::mock(\stdClass::class, ProductRepositoryInterface::class);
-        $this->repoForTests->shouldReceive('findAll')->andReturn($this->mockPaginator);
+        $this->repoForTests->shouldReceive('findAll')->once()->andReturn($this->mockPaginator);
     }
 
     private function mockPagination(array $items = []): void {

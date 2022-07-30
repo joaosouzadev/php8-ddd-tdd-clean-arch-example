@@ -23,7 +23,7 @@ class CreateProductUseCaseTest extends TestCase {
         $this->mockEntity->shouldReceive('getUpdatedAt')->andReturn($this->mockEntity->updatedAt->format('Y-m-d H:i:s'));
 
         $this->repoForTests = \Mockery::mock(\stdClass::class, ProductRepositoryInterface::class);
-        $this->repoForTests->shouldReceive('insert')->andReturn($this->mockEntity);
+        $this->repoForTests->shouldReceive('insert')->once()->andReturn($this->mockEntity);
 
         $this->mockInputDto = \Mockery::mock(CreateProductInputDto::class, [
             "GeForce RTX 3060",
@@ -36,14 +36,10 @@ class CreateProductUseCaseTest extends TestCase {
         $this->assertInstanceOf(CreateProductOutputDto::class, $response);
         $this->assertEquals($this->mockInputDto->name, $response->name);
         $this->assertEquals($this->mockInputDto->price, $response->price);
+    }
 
-        // spy
-        $this->spy = \Mockery::spy(\stdClass::class, ProductRepositoryInterface::class);
-        $this->spy->shouldReceive('insert')->andReturn($this->mockEntity);
-        $useCase = new CreateProductUseCase($this->spy);
-        $responseUseCase = $useCase->execute($this->mockInputDto);
-        $this->spy->shouldHaveReceived('insert');
-
+    protected function tearDown(): void {
         \Mockery::close();
+        parent::tearDown();
     }
 }
